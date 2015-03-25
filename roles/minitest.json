@@ -1,0 +1,9 @@
+{
+  "name": "minitest",
+  "description": "Role added to vagrant boxes running tests",
+  "chef_type": "role",
+  "json_class": "Chef::Role",
+  "run_list": [
+    "recipe[minitest-handler]"
+  ]
+}

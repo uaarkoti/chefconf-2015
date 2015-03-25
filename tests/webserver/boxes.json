@@ -1,0 +1,7 @@
+{
+  "webserver": {
+    "run_list": [
+      "role[webserver]"
+    ]
+  }
+}

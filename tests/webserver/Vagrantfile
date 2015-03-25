@@ -1,0 +1,26 @@
+require "fileutils"
+
+ubuntu_version = 'precise'
+
+boxes = JSON.parse(File.read(File.join(File.dirname(__FILE__), 'boxes.json')), :symbolize_names => true)
+
+Vagrant.configure(2) do |config|
+  config.berkshelf.enabled = false
+  config.omnibus.chef_version = :latest
+  boxes.each do |name, attributes|
+    config.vm.define name do |vm_config|
+      vm_config.vm.box = "hashicorp/precise64"
+      vm_config.vm.host_name = "chef-cloudbees-test"
+      vm_config.vm.provision :chef_solo do |chef|
+    	  chef.cookbooks_path = '../../cookbooks' if ::File.exists?('../../cookbooks')
+	      chef.roles_path = '../../roles' if ::File.exists?('../../roles')
+        attributes[:run_list] << "role[minitest]"
+        attributes[:minitest] = {}
+        attributes[:minitest][:ci_reports] = "/tmp/chef-solo-ci-reports/"
+	      attributes.each do |key, value|
+          chef.json[key] = value
+        end
+      end
+    end
+  end
+end
