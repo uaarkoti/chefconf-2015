@@ -49,9 +49,9 @@ node('master') {
       sh 'scp -r ' + OPTIONS + ' vagrant@$127.0.0.1:/tmp/chef-solo-ci-reports ' + ROOT + '/'
 
       sh 'vagrant destroy -f'
-      step([$class: 'JUnitResultArchiver', testResults: 'chef-solo-ci-reports/*.xml'])
     }
 
+    step([$class: 'JUnitResultArchiver', testResults: 'chef-solo-ci-reports/*.xml'])
     try {
       checkpoint('Before pre-prod')
     } catch (NoSuchMethodError _) {
