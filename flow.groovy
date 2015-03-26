@@ -49,6 +49,16 @@ node('master') {
       sh 'scp -r ' + OPTIONS + ' vagrant@$127.0.0.1:/tmp/chef-solo-ci-reports ' + ROOT + '/'
 
       sh 'vagrant destroy -f'
+      step([$class: 'JUnitResultArchiver', testResults: 'chef-solo-ci-reports/*.xml'])
     }
+
+    try {
+      checkpoint('Before pre-prod')
+    } catch (NoSuchMethodError _) {
+      echo 'Checkpoint feature available in Jenkins Enterprise by CloudBees.'
+    }
+
+    stage "Pre Prod"
+    echo "Preparing for staging"
   }
 }
