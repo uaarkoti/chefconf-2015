@@ -1,5 +1,6 @@
 node('master') {
 
+  sh 'rm -rf chefconf-2015'
   stage "Dev"
   dir('chefconf-2015') {
     ROOT=pwd()
