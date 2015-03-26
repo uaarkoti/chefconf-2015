@@ -11,7 +11,8 @@ node('master') {
     }
 
     sh './chef-ci-tools/bin/chef-foodcritic-publisher.sh -X spec -f any -t "~FC003"'
-    archive 'junit_reports/foodcritic-*.xml'
+    step([$class: 'JUnitResultArchiver', testResults: 'junit_reports/foodcritic-*.xml'])
+    //archive 'junit_reports/foodcritic-*.xml'
    
     stage "QA"
     sh 'rm -rf rspec_results'
@@ -19,7 +20,8 @@ node('master') {
     sh 'for cbname in `find cookbooks -maxdepth 1 -mindepth 1 -type d` ; do rspec $cbname --format RspecJunitFormatter --out rspec_results/${cbname}-results.xml; done;'
 
     // Archive RSpec results
-    archive 'rspec_results/*/*.xml'
+    step([$class: 'JUnitResultArchiver', testResults: 'rspec_results/*/*.xml'])
+    //archive 'rspec_results/*/*.xml'
 
     dir('cookbooks') {
       sh 'git submodule init'
