@@ -20,27 +20,32 @@ node('master') {
     // Archive RSpec results
     archive 'rspec_results/*/*.xml'
 
+    dir('cookbooks') {
+      sh 'git submodule init'
+      sh 'git submodule update'
+    }
+
     stage "Integration"
     dir('tests/webserver') {
 
-      //sh 'vagrant destroy -f'
-      //sh 'vagrant up'
+      sh 'vagrant destroy -f'
+      sh 'vagrant up'
 
       //sh 'OPTIONS=`vagrant ssh-config | awk -v ORS=\' \' \'{print "-o " $1 "=" $2}\'`'
-      //sh 'vagrant ssh-config | awk -v ORS=\' \' \'{print "-o " $1 "=" $2}\' > result'
-      //def OPTIONS = readFile('result')
-      //echo "${OPTIONS}"
+      sh 'vagrant ssh-config | awk -v ORS=\' \' \'{print "-o " $1 "=" $2}\' > result'
+      def OPTIONS = readFile('result')
+      echo "${OPTIONS}"
 
       // get stactrace
-      //sh "ssh ${OPTIONS} vagrant@127.0.0.1 \"sudo chmod -R a+r /var/chef/\""
+      sh "ssh ${OPTIONS} vagrant@127.0.0.1 \"sudo chmod -R a+r /var/chef/\""
 
-      //echo "copy strace out.. if any... to ${ROOT}"
+      echo "copy strace out.. if any... to ${ROOT}"
       //sh "scp ${OPTIONS} vagrant@127.0.0.1:/var/chef/cache/chef-stacktrace.out ${ROOT}/chef-stacktrace.out"
 
-      //echo 'copy chef-solo-ci-reports...'
-      //sh "scp -r ${OPTIONS} vagrant@$127.0.0.1:/tmp/chef-solo-ci-reports ${ROOT}/"
+      echo 'copy chef-solo-ci-reports...'
+      sh 'scp -r ' + OPTIONS + ' vagrant@$127.0.0.1:/tmp/chef-solo-ci-reports ' + ROOT + '/'
 
-      //sh 'vagrant destroy -f'
+      sh 'vagrant destroy -f'
     }
   }
 }

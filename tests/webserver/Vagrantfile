@@ -12,12 +12,12 @@ Vagrant.configure(2) do |config|
       vm_config.vm.box = "hashicorp/precise64"
       vm_config.vm.host_name = "chef-cloudbees-test"
       vm_config.vm.provision :chef_solo do |chef|
-    	  chef.cookbooks_path = '../../cookbooks' if ::File.exists?('../../cookbooks')
-	      chef.roles_path = '../../roles' if ::File.exists?('../../roles')
+        chef.cookbooks_path = '../../cookbooks' if ::File.exists?('../../cookbooks')
+        chef.roles_path = '../../roles' if ::File.exists?('../../roles')
         attributes[:run_list] << "role[minitest]"
         attributes[:minitest] = {}
         attributes[:minitest][:ci_reports] = "/tmp/chef-solo-ci-reports/"
-	      attributes.each do |key, value|
+        attributes.each do |key, value|
           chef.json[key] = value
         end
       end
