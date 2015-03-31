@@ -1,14 +1,30 @@
 # ChefConf 2015 - Jenkins Workshop
 
-Let's show how to test the infrastructure.
+Testing infrastructure as code
+
+## Tools
+
+[Jenkins Enterprise](http://nectar-downloads.cloudbees.com/jenkins-enterprise/1.580/)
+- Install
+  - Install JDK 7 or higher
+  - Download latest jenkins enterprise
+  - Start jenkins : 
+    - java -jar jenkins.war 
+    - service jenkins start
+  - Register to get an eval license
+
+[Chef](https://downloads.chef.io/chef-dk/)
+```
+curl -L http://www.getchef.com/chef/install.sh | sudo bash -s -- -P chefdk
+```
 
 ## Overview of testing levels
 
-Usually there are at least 3 levels:
+Usually there are at least 3 levels of testing
 
-1. static code analysis and lint checking
-2. unit testing
-3. integration testing
+1. Static code analysis and lint checking
+2. Unit testing
+3. Integration testing
 
 ### Lint
 
@@ -16,6 +32,7 @@ We're using [foodcritic](https://foodcritic.io) for static code analysis. Foodcr
 
 It comes with 47 built-in rules that identify problems ranging from simple style inconsistencies to difficult to diagnose issues that will hurt in production.
 
+Here is a way to run foodcritic and publish the results to jenkins
 ```bash
 if [[ ! -d chef-ci-tools ]]; then
   git clone https://github.com/woohgit/chef-ci-tools.git
@@ -37,6 +54,7 @@ Use ChefSpec to simulate the convergence of resources on a node:
 - Is an extension of RSpec, a behavior-driven development (BDD) framework for Ruby
 - Is the fastest way to test resources
 
+Here is a way to run ChefSpec and publish the results to jenkins. The assumption is that you have several cookbooks you are testing together (not a single cookbook).
 ```bash
 rm -rf rspec_results
 mkdir rspec_results
@@ -47,16 +65,15 @@ do
 done
 ```
 
-
-
 ### Integration
 
 We're using [Minitest](https://github.com/seattlerb/minitest) for integration testing.
 
-We're spinning up an EC2 or Vagrant virtual instance. Run chef-solo on it. Analyze the results.
+We're spinning up a Vagrant virtual instance. Run chef-solo on it and analyzing the results.
 
-Why using integration tests if we have unit tests? Well to make sure it does what it should do.
+Why using integration tests if we have unit tests? Well to make sure it does what it should do in a clean environment each time.
 
+Here is a way to run minitest and publish the results to jenkins
 ```bash
 cd tests/webserver
 
@@ -74,14 +91,14 @@ echo "copy chef-solo-ci-reports..."
 scp -r ${OPTIONS} vagrant@$127.0.0.1:/tmp/chef-solo-ci-reports ${WORKSPACE}/
 
 vagrant destroy -f
-
 ```
 
 ## Requirements
 
 ### On the host machine
 
-- Chef DK
+- ChefDK
+   - chef shell-init bash/zsh
 - Ruby 2.0
 	- If ruby/gem binaries point to older version, re-link them to 2.0 versions
 	- Install ruby2.0-dev package as well - ohai depends on ruby2.0 >
@@ -100,7 +117,6 @@ vagrant destroy -f
 - Foodcritic
 - Ruby-Dev
 - Perl
-
 
 ## Jenkins job installation
 
