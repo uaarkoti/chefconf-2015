@@ -81,6 +81,14 @@ vagrant destroy -f
 
 ### On the host machine
 
+- Chef DK
+- Ruby 2.0
+	- If ruby/gem binaries point to older version, re-link them to 2.0 versions
+	- Install ruby2.0-dev package as well - ohai depends on ruby2.0 >
+	- Install ruby1.9.1-dev - vagrant-chef-zero depends on it
+	- gem install rspec chefspec rspec_junit_formatter
+- ChefSpec
+- Jenkins
 - VirtualBox
 - Vagrant and plugins
 	- vagrant-berkshelf
@@ -90,8 +98,8 @@ vagrant destroy -f
 	- vagrant-share
 	- vagrant-triggers
 - Foodcritic
+- Ruby-Dev
 - Perl
-- Jenkins
 
 
 ## Jenkins job installation
