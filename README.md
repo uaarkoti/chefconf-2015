@@ -107,6 +107,7 @@ vagrant destroy -f
 First, start up your jenkins and create the jobs located in the `jenkins_jobs` directory.
 
 ```bash
+$ wget --no-check-certificate http://localhost:8080/jnlpJars/jenkins-cli.jar
 $ java -jar ./jenkins-cli.jar -s http://localhost:8080/ create-job cookbooks-lint-check < jenkins_jobs/cookbooks-lint-check.config.xml
 $ java -jar ./jenkins-cli.jar -s http://localhost:8080/ create-job cookbooks-unit-tests < jenkins_jobs/cookbooks-unit-tests.config.xml
 $ java -jar ./jenkins-cli.jar -s http://localhost:8080/ create-job cookbooks-integration-tests < jenkins_jobs/cookbooks-integration-tests.config.xml
