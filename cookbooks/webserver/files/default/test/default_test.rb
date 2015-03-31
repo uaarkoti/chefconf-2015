@@ -5,6 +5,6 @@ include ::MiniTest::Chef::Resources
 
 class TestNginx < MiniTest::Chef::Spec
   it "listens on port 81" do
-      TCPSocket.open("localhost", 81)
+      TCPSocket.open("localhost", 82)
   end
 end
