@@ -13,7 +13,7 @@ Testing infrastructure as code
     - service jenkins start
   - Register to get an eval license
 
-[Chef](https://downloads.chef.io/chef-dk/)
+[Chef Development Kit](https://downloads.chef.io/chef-dk/)
 ```
 curl -L http://www.getchef.com/chef/install.sh | sudo bash -s -- -P chefdk
 ```
